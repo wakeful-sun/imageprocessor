@@ -2,7 +2,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 
-def applyDetectionArea(image, area_width_adjustment=15, area_height_adjustment=50):
+
+def getColorMask(hsv_frame):
+    lower_yellow = np.array([20, 0, 170], dtype=np.uint8)
+    upper_yellow = np.array([55, 255, 255], dtype=np.uint8)
+    mask_yellow = cv2.inRange(hsv_frame, lower_yellow, upper_yellow)
+
+    lower_white = np.array([0, 0, 220], dtype=np.uint8)
+    upper_white = np.array([255, 25, 255], dtype=np.uint8)
+    mask_white = cv2.inRange(hsv_frame, lower_white, upper_white)
+
+    mask = cv2.add(mask_white, mask_yellow)
+    return mask
+
+
+def applyDetectionArea(image, area_width_adjustment=60, area_height_adjustment=65):
     ignore_mask_color = 255
 
     im_height = image.shape[0]

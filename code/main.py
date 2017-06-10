@@ -6,59 +6,69 @@ import os
 import lanes_area
 import edge_detection
 
+image1 = "../input/test_images/solidWhiteCurve.jpg"
+image2 = "../input/test_images/solidWhiteRight.jpg"
+image3 = "../input/test_images/solidYellowCurve.jpg"
+image4 = "../input/test_images/solidYellowCurve2.jpg"
+image5 = "../input/test_images/solidYellowLeft.jpg"
+image6 = "../input/test_images/whiteCarLaneSwitch.jpg"
 
-current_directory = os.path.dirname(__file__)
-# image_path = "../input/test_images/solidYellowLeft.jpg"
-# frame_path = os.path.join(current_directory, image_path)
-# frame = mpimg.imread(frame_path)
-
-video_path = "../input/test_videos/challenge.mp4"
-# video_path = "../input/test_videos/solidYellowLeft.mp4"
-video = cv2.VideoCapture(os.path.join(current_directory, video_path))
-
-
-def applyColorFilters(image):
-    white_threshold = [220, 220, 220]
-    yellow_threshold = [220, 190, 100]
-
-    # yellow_dot = (image[:, :, 0] > 220) | (image[:, :, 1] > 190) | (image[:, :, 2] < 100)
-    yellow_dot = (image[:, :, 0] < 100) | (image[:, :, 1] > 190) | (image[:, :, 2] > 220)
-    white_dot = (image[:, :, 0] > 220) | (image[:, :, 1] > 220) | (image[:, :, 2] > 220)
-
-    filtered_image = np.copy(image)
-    filtered_image[yellow_dot | white_dot] = [255, 255, 255]
-
-    return filtered_image
+video1 = "../input/test_videos/challenge.mp4"
+video2 = "../input/test_videos/solidYellowLeft.mp4"
+video3 = "../input/test_videos/solidWhiteRight.mp4"
 
 
-def composeFrame(image):
-    edges = edge_detection.drawLaneEdges(image)
-    # line_image = applyColorFilters(image)
-    # pure_white = (line_image[:, :, 0] == 255) | (line_image[:, :, 1] == 255) | (line_image[:, :, 2] == 255)
-    # edges[~pure_white] = [0, 0, 0]
-    result_image = cv2.addWeighted(edges, 0.8, image, 1, 0)
+def getPathFor(file_path):
+    current_directory = os.path.dirname(__file__)
+    return os.path.join(current_directory, file_path)
 
+
+def processFrame(bgr_frame):
+    frame = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2HSV)
+
+    color_mask = lanes_area.getColorMask(frame)
+    area = lanes_area.applyDetectionArea(color_mask)
+
+    edges = edge_detection.getEdges(area)
+    result = edge_detection.detectLanes(area, frame.shape)
+
+    result_image = cv2.addWeighted(result, 0.9, bgr_frame, 1, 0)
     return result_image
 
 
-while(video.isOpened()):
-    ret, frame = video.read()
+def playVideo(file_path):
+    video_path = getPathFor(file_path)
+    video = cv2.VideoCapture(video_path)
 
-    processedFrame = composeFrame(frame)
+    while(video.isOpened()):
+        _, bgr_frame = video.read()
 
-    cv2.imshow("lanes", processedFrame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        frame = processFrame(bgr_frame)
+        cv2.imshow("output", frame)
 
-video.release()
-cv2.destroyAllWindows()
+        key = cv2.waitKey(1) & 0xFF
+        # stop video on ESC key pressed
+        if key == 27:
+            break
+
+    video.release()
+    cv2.destroyAllWindows()
 
 
-# edges = edge_detection.drawLaneEdges(frame)
-# line_image = applyColorFilters(frame)
-# pure_white = (line_image[:, :, 0] == 255) | (line_image[:, :, 1] == 255) | (line_image[:, :, 2] == 255)
-# edges[~pure_white] = [0, 0, 0]
-# result_image = cv2.addWeighted(edges, 0.8, frame, 1, 0)
+def showImage(file_path):
+    def flipColors(image):
+        return image[..., [2, 1, 0]]
 
-# plt.imshow(edges)
-# plt.show()
+    image_path = getPathFor(file_path)
+    rgb_image = mpimg.imread(image_path)
+    bgr_frame = flipColors(rgb_image)
+
+    brg_frame = processFrame(bgr_frame)
+
+    rgb_frame = flipColors(brg_frame)
+    plt.imshow(rgb_frame)
+    plt.show()
+
+
+# showImage(image1)
+playVideo(video2)

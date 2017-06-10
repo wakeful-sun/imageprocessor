@@ -16,9 +16,12 @@ def getGrayImage(image):
 def getEdges(image):
     low_threshold = 50
     high_threshold = 150
-    grey_image = getGrayImage(image)
+    grey_image = np.copy(image)#getGrayImage(image)
 
-    edges = cv2.Canny(grey_image, low_threshold, high_threshold)
+    kernel_size = 3
+
+    blur = cv2.GaussianBlur(grey_image, (kernel_size, kernel_size), 0)
+    edges = cv2.Canny(blur, low_threshold, high_threshold)
     return edges
 
 
@@ -27,17 +30,15 @@ def detectLanes(edges_image, image_shape):
     theta = (np.pi / 180) * 1
 
     min_intersection_amount = 15
-    min_line_length = 40
-    max_line_gap = 20
+    min_line_length = 25
+    max_line_gap = 15
 
     lines = cv2.HoughLinesP(edges_image, rho, theta, min_intersection_amount, np.array([]),
                             min_line_length, max_line_gap)
-
     line_image = np.zeros(image_shape, dtype=DOT_TYPE)
     for line in lines:
         for x1, y1, x2, y2 in line:
-            # cv2.line(line_image, (x1, y1), (x2, y2), (255, 0, 0), 10)
-            cv2.line(line_image, (x1, y1), (x2, y2), (0, 0, 255), 10)
+            cv2.line(line_image, (x1, y1), (x2, y2), (0, 0, 255), 5)
 
     return line_image
 
