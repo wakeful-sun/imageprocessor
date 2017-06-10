@@ -28,9 +28,10 @@ def processFrame(bgr_frame):
 
     color_mask = lanes_area.getColorMask(frame)
     area = lanes_area.applyDetectionArea(color_mask)
+    blur = edge_detection.applyGaussianBlur(area)
 
-    edges = edge_detection.getEdges(area)
-    result = edge_detection.detectLanes(area, frame.shape)
+    edges = edge_detection.getEdges(blur, 50, 150)
+    result = edge_detection.detectLanes(edges, frame.shape)
 
     result_image = cv2.addWeighted(result, 0.9, bgr_frame, 1, 0)
     return result_image
@@ -70,5 +71,5 @@ def showImage(file_path):
     plt.show()
 
 
-# showImage(image1)
-playVideo(video2)
+showImage(image5)
+# playVideo(video1)
