@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import cv2
 import os
+import numpy as np
+from detection_area import DetectionAreaFilter
+from lines_sorting import CoordinateSorter
 from image_processor import ImageProcessor
 
 image1 = "../input/test_images/solidWhiteCurve.jpg"
@@ -15,7 +18,15 @@ video1 = "../input/test_videos/challenge.mp4"
 video2 = "../input/test_videos/solidYellowLeft.mp4"
 video3 = "../input/test_videos/solidWhiteRight.mp4"
 
-img_processor = ImageProcessor()
+detection_area_filter = DetectionAreaFilter()
+
+max_distance_delta = 40  # max distance between lines (rho1 - rho2) in polar coordinate system
+max_angle_delta = np.radians(4)  # max angle between lines (theta1 - theta2) in polar coordinate system
+threshold = 3  # min amount of lines in set filter
+coordinate_sorter = CoordinateSorter(max_distance_delta, max_angle_delta, threshold)
+
+img_processor = ImageProcessor(detection_area_filter, coordinate_sorter)
+
 
 def getPathFor(file_path):
     current_directory = os.path.dirname(__file__)
@@ -28,6 +39,10 @@ def playVideo(file_path):
 
     while video.isOpened():
         _, bgr_frame = video.read()
+
+        if not isinstance(bgr_frame, np.ndarray):
+            # workaround to handle end of video stream.
+            break
 
         frame = img_processor.processFrame(bgr_frame)
         cv2.imshow("output", frame)
@@ -56,5 +71,5 @@ def showImage(file_path):
     plt.show()
 
 
-showImage(image6)
+showImage(image3)
 #playVideo(video1)

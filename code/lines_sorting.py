@@ -5,6 +5,31 @@ import pandas
 class CoordinateSorter:
 
     def __init__(self, max_distance_delta, max_angle_delta, threshold):
+
+        """
+        Scenario: 'threshold' parameter allows to filter out noise lines
+          Given: threshold = 4, set of lines
+           When: sorter found 3 groups of lines
+            And: the first set of lines contains 10 lines, second - 5 lines
+            But: the third set of lines contains 3 lines
+           Then: the third considered as noise and will not be presented in sorting result
+          --
+        Scenario: 'max_distance_delta' and 'max_angle_delta' parameters allow to control line group detection
+          Given: 5 lines have been given to sort
+            And: it is possible to create a chain 'chain_1' of lines line1, line2, line3
+          Where: distance between links is less (or equal) then (max_distance_delta, max_angle_delta)
+            And: it is possible to create a chain 'chain_2' of lines line4, line5
+          Where: distance between links is less (or equal) then (max_distance_delta, max_angle_delta)
+            And: distance between chain_1 and chain_2 edges is more than (max_distance_delta, max_angle_delta)
+           Then: chain_1 and chain_2 considered as two separate lines
+          --
+        Resulting line is calculate as median of all lines in a group
+
+        :param max_distance_delta: rho1 - rho2
+        :param max_angle_delta: theta1 - theta2 threshold in radians
+        :param threshold: min lines amount in one group
+        """
+
         if max_angle_delta < 0:
             raise ValueError("[max_angle_delta] must be positive number")
 
@@ -28,7 +53,8 @@ class CoordinateSorter:
             for inner_key, inner_value in points_dict.items():
                 point_distance = abs(np.subtract(value, inner_value))
 
-                if point_distance[0] <= self._max_point_distance[0] and point_distance[1] <= self._max_point_distance[1]:
+                if point_distance[0] <= self._max_point_distance[0] \
+                        and point_distance[1] <= self._max_point_distance[1]:
                     indexes_set.add(inner_key)
 
         return set_list
@@ -65,7 +91,7 @@ class CoordinateSorter:
         return filtered_extremums
 
     @staticmethod
-    def _getMedianPoint(source_dict, key_set):
+    def _getMedian(source_dict, key_set):
         point_array = [source_dict[item] for item in key_set]
         data_frame = pandas.DataFrame(data=point_array, columns=["distance", "angle"])
 
@@ -83,6 +109,6 @@ class CoordinateSorter:
 
         point_set_list = self._sortPointsByDistance(points_dictionary)
         point_groups = self._splitOnGroups(point_set_list)
-        resulting_points = [self._getMedianPoint(points_dictionary, point_group) for point_group in point_groups]
+        resulting_points = [self._getMedian(points_dictionary, point_group) for point_group in point_groups]
 
         return resulting_points
