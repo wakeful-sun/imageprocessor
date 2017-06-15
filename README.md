@@ -90,3 +90,4 @@ Colors detection on HSV image allows efficientely get rid of noise coused by sha
 </ol>
 
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
+Also it makes sense to implement filter for lines with unexpected Ѳ. It should be extremely easy.
