@@ -10,39 +10,50 @@ When we drive, we use our eyes to decide where to go.  The lines on the road tha
 Project Writeup
 ---
 
+
+Project Writeup
+
 Programm has image processing pipeline that support both RGB images and BGR video input.
 
-    RGB image processing consists of next steps:
-        - image file reading. File expected to exist on disk
-        - RGB to BGR conversion
-        - common image processing pipeline
-        - processing result conversion (BGR to RGB)
-        - result image output
-    BGR video processing consists of next steps:
-        - video file capturing. File expected to exist on disk
-        - video frame processing loop:
-            * common image processing pipeline
-            * result frame output
-        - resources release
+<b>RGB image processing consists of next steps:</b>
+<ol>
+    <li>image file reading. File expected to exist on disk</li>
+    <li>RGB to BGR conversion</li>
+    <li>common image processing pipeline</li>
+    <li>processing result conversion (BGR to RGB)</li>
+    <li>result image output</li>
+</ol>
 
-    Image processing pipeline does:
-        - BGR to HSV conversion
-        - white and yellow colors filter, creates b/w image. Makes other colored objects black
-        - detection area filter. Creates new b/w image output of color filter result
-        - edge detection
-        - lines detection with help of Hough transform method (cv2.HoughLines tool)
-        - lanes detection with help of custom algorithm that does line groups detection and median line
-          calculation for each found group
-        - lane lines Polar coortinate to Cartesian coordinate conversion, drawing lane lines
-        - result image composition from initial frame and detected lane lines images
-        - result image returned to program for output/further operations
+<b>BGR video processing consists of next steps:</b>
+<ol>
+    <li>video file capturing. File expected to exist on disk</li>
+    <li>video frame processing loop:
+        <ul>
+            <li>common image processing pipeline</li>
+            <li>result frame output</li>
+        </ul>
+    </li>
+    <li>resources release</li>
+</ol>
+
+<b>Image processing pipeline does:</b>
+<ol>
+    <li>BGR to HSV conversion</li>
+    <li>white and yellow colors filter, creates b/w image. Makes other colored objects black</li>
+    <li>detection area filter. Creates new b/w image output of color filter result</li>
+    <li>edge detection</li>
+    <li>lines detection with help of Hough transform method (cv2.HoughLines tool)</li>
+    <li>lanes detection with help of custom algorithm that does line groups detection and median line calculation for each found group</li>
+    <li>lane lines Polar coortinate to Cartesian coordinate conversion, drawing lane lines</li>
+    <li>result image composition from initial frame and detected lane lines images</li>
+    <li>result image returned to program for output/further operations</li>
+</ol>
 
 Colors detection on HSV image allows efficientely get rid of noise coused by shadows and road surface color artifacts. Further b/w image processing might save processor time.
 
-Image processing pipeline in pictures:
 
-
-<ul>
+<h3>Image processing pipeline in pictures:</h3>
+<ol>
     <li>
         <div>White and yellow colors filter resul</div>
         <div><img src="results/01_white_and_yello_color_filter_output.png" width="560" alt="Color filter result" /></div>
@@ -71,7 +82,7 @@ Image processing pipeline in pictures:
         <div>Program output</div>
         <div><img src="results/07_program_result.png" width="560" alt="Program output result" /></div>
     </li>
-</ul>
+</ol>
 
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
 
