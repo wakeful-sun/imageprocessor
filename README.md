@@ -92,3 +92,5 @@ Colors detection on HSV image allows efficientely get rid of noise coused by sha
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
 
 Also it makes sense to implement filter for lines with unexpected Ѳ. It should be extremely easy.
+
+And if accept assumption that only 2 lane lines needs to be tracked as valid, it is possible to change input parameters so that output will be more stable.
