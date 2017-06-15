@@ -13,7 +13,7 @@ Repository contains:
 - test images and videos for input
 - result folder with images that show image transformation states
 
-Note: Please import 'OnroadLanesDetector.ipynb' file and 'input' folder into the same location. Jupyter Notebook file allows to execute whole cycle against different sources.
+<b>Note</b>: Please import 'OnroadLanesDetector.ipynb' file and 'input' folder into the same location. Jupyter Notebook file allows to execute whole cycle against different sources.
 
 Project Writeup
 ---
