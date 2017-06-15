@@ -31,12 +31,18 @@ Programm has image processing pipeline that support both RGB images and BGR vide
         - detection area filter. Creates new b/w image output of color filter result
         - edge detection
         - lines detection with help of Hough transform method (cv2.HoughLines tool)
-        - lanes detection with help of custom algorithm that does line groups detection and median line calculation for each found group
+        - lanes detection with help of custom algorithm that does line groups detection and median line
+          calculation for each found group
         - lane lines Polar coortinate to Cartesian coordinate conversion, drawing lane lines
         - result image composition from initial frame and detected lane lines images
         - result image returned to program for output/further operations
 
 Colors detection on HSV image allows efficientely get rid of noise coused by shadows and road surface color artifacts. Further b/w image processing might save processor time.
+
+Image processing pipeline in pictures:
+    White and yellow colors filtering
+<img src="results/01_white_and_yello_color_filter_output.png" width="350" alt="Color filter result" />
+
 
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
 
