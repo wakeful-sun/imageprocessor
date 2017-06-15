@@ -7,6 +7,14 @@ Overview
 
 When we drive, we use our eyes to decide where to go.  The lines on the road that show us where the lanes are act as our constant reference for where to steer the vehicle.  Naturally, one of the first things we would like to do in developing a self-driving car is to automatically detect lane lines using an algorithm.
 
+Repository contains:
+- Python code with point in main.py
+- Jupyter Notebook with program and steps description
+- test images and videos for input
+- result folder with images that show image transformation states
+
+Note: Please import 'OnroadLanesDetector.ipynb' file and 'input' folder into the same location. Jupyter Notebook file allows to execute whole cycle against different sources.
+
 Project Writeup
 ---
 
