@@ -40,9 +40,21 @@ Programm has image processing pipeline that support both RGB images and BGR vide
 Colors detection on HSV image allows efficientely get rid of noise coused by shadows and road surface color artifacts. Further b/w image processing might save processor time.
 
 Image processing pipeline in pictures:
-    White and yellow colors filtering
-<img src="results/01_white_and_yello_color_filter_output.png" width="350" alt="Color filter result" />
 
+
+<ul>
+    <li>
+        White and yellow colors filtering
+
+        <img src="results/01_white_and_yello_color_filter_output.png" width="500" alt="Color filter result" />
+    </li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
 
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
 
