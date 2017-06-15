@@ -1,10 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
-import numpy as np
 import cv2
 import os
-import lanes_area
-import edge_detection
+from image_processor import ImageProcessor
 
 image1 = "../input/test_images/solidWhiteCurve.jpg"
 image2 = "../input/test_images/solidWhiteRight.jpg"
@@ -17,37 +15,21 @@ video1 = "../input/test_videos/challenge.mp4"
 video2 = "../input/test_videos/solidYellowLeft.mp4"
 video3 = "../input/test_videos/solidWhiteRight.mp4"
 
+img_processor = ImageProcessor()
 
 def getPathFor(file_path):
     current_directory = os.path.dirname(__file__)
     return os.path.join(current_directory, file_path)
 
 
-def processFrame(bgr_frame):
-    frame = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2HSV)
-
-    color_mask = lanes_area.getColorMask(frame)
-    area = lanes_area.applyDetectionArea(color_mask)
-    # blur = edge_detection.applyGaussianBlur(area)
-
-    edges = edge_detection.getEdges(area)
-    lanes = edge_detection.detectLaneLines(edges)
-
-    #r = np.dstack((lanes, lanes, lanes))
-    #return r
-
-    result_image = cv2.addWeighted(lanes, 0.9, bgr_frame, 1, 0)
-    return result_image
-
-
 def playVideo(file_path):
     video_path = getPathFor(file_path)
     video = cv2.VideoCapture(video_path)
 
-    while(video.isOpened()):
+    while video.isOpened():
         _, bgr_frame = video.read()
 
-        frame = processFrame(bgr_frame)
+        frame = img_processor.processFrame(bgr_frame)
         cv2.imshow("output", frame)
 
         key = cv2.waitKey(1) & 0xFF
@@ -60,21 +42,19 @@ def playVideo(file_path):
 
 
 def showImage(file_path):
-    def flipColors(image):
+    def convert(image):
         return image[..., [2, 1, 0]]
 
     image_path = getPathFor(file_path)
     rgb_image = mpimg.imread(image_path)
-    bgr_frame = flipColors(rgb_image)
 
-    brg_frame = processFrame(bgr_frame)
+    bgr_frame = convert(rgb_image)
+    frame = img_processor.processFrame(bgr_frame)
+    rgb_frame = convert(frame)
 
-    rgb_frame = flipColors(brg_frame)
     plt.imshow(rgb_frame)
     plt.show()
 
 
-showImage(image2)
-#showImage(image3)
-
-# playVideo(video1)
+showImage(image6)
+#playVideo(video1)

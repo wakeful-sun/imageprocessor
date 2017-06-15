@@ -17,7 +17,7 @@ class CoordinateSorter:
         self._max_point_distance = (max_distance_delta, max_angle_delta)
         self._min_points_amount = threshold
 
-    def _sort_points_by_distance(self, points_dict):
+    def _sortPointsByDistance(self, points_dict):
         set_list = list()
 
         for key, value in points_dict.items():
@@ -28,12 +28,12 @@ class CoordinateSorter:
             for inner_key, inner_value in points_dict.items():
                 point_distance = abs(np.subtract(value, inner_value))
 
-                if point_distance[0] < self._max_point_distance[0] and point_distance[1] < self._max_point_distance[1]:
+                if point_distance[0] <= self._max_point_distance[0] and point_distance[1] <= self._max_point_distance[1]:
                     indexes_set.add(inner_key)
 
         return set_list
 
-    def _split_on_groups(self, set_list_source):
+    def _splitOnGroups(self, set_list_source):
 
         sorted_source = list(set_list_source)
         sorted_source.sort(key=len, reverse=True)
@@ -65,12 +65,11 @@ class CoordinateSorter:
         return filtered_extremums
 
     @staticmethod
-    def _get_median_point(source_dict, key_set):
+    def _getMedianPoint(source_dict, key_set):
         point_array = [source_dict[item] for item in key_set]
         data_frame = pandas.DataFrame(data=point_array, columns=["distance", "angle"])
-        median_point = (data_frame["distance"].median(), data_frame["angle"].median())
 
-        return median_point
+        return data_frame["distance"].median(), data_frame["angle"].median()
 
     def sort(self, points_array):
 
@@ -82,8 +81,8 @@ class CoordinateSorter:
         for index, coordinates in enumerate(points_array):
             points_dictionary[index] = (int(coordinates[0]), coordinates[1])
 
-        point_set_list = self._sort_points_by_distance(points_dictionary)
-        point_groups = self._split_on_groups(point_set_list)
-        resulting_points = [self._get_median_point(points_dictionary, point_group) for point_group in point_groups]
+        point_set_list = self._sortPointsByDistance(points_dictionary)
+        point_groups = self._splitOnGroups(point_set_list)
+        resulting_points = [self._getMedianPoint(points_dictionary, point_group) for point_group in point_groups]
 
         return resulting_points
