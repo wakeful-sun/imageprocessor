@@ -44,15 +44,33 @@ Image processing pipeline in pictures:
 
 <ul>
     <li>
-        <div>White and yellow colors filtering</div>
-        <div><img src="results/01_white_and_yello_color_filter_output.png" width="500" alt="Color filter result" /></div>
+        <div>White and yellow colors filter resul</div>
+        <div><img src="results/01_white_and_yello_color_filter_output.png" width="560" alt="Color filter result" /></div>
     </li>
-    <li>1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>6</li>
+    <li>
+        <div>Detection area filter result</div>
+        <div><img src="results/02_detection_area.png" width="560" alt="Detection area filter result" /></div>
+    </li>
+    <li>
+        <div>Edge detection result</div>
+        <div><img src="results/03_edge_detection.png" width="560" alt="Edge detection" /></div>
+    </li>
+    <li>
+        <div>Transformed into image cv2.HoughLines output</div>
+        <div><img src="results/04_cv2.HoughLines_result.png" width="560" alt="Hough transformation" /></div>
+    </li>
+    <li>
+        <div>Transformed into image lines filtering and grouping with resulting line algorithm output</div>
+        <div><img src="results/05_lines_grouping_result.png" width="560" alt="Lines groupting" /></div>
+    </li>
+    <li>
+        <div>Polar coortinate to Cartesian coordinate conversion, drawing</div>
+        <div><img src="results/06_drawing_result.png" width="560" alt="Lanes drawing" /></div>
+    </li>
+    <li>
+        <div>Program output</div>
+        <div><img src="results/07_program_result.png" width="560" alt="Program output result" /></div>
+    </li>
 </ul>
 
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
