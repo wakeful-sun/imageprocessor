@@ -10,9 +10,6 @@ When we drive, we use our eyes to decide where to go.  The lines on the road tha
 Project Writeup
 ---
 
-
-Project Writeup
-
 Programm has image processing pipeline that support both RGB images and BGR video input.
 
 <b>RGB image processing consists of next steps:</b>
@@ -85,4 +82,3 @@ Colors detection on HSV image allows efficientely get rid of noise coused by sha
 </ol>
 
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
-
