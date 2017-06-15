@@ -44,16 +44,15 @@ Image processing pipeline in pictures:
 
 <ul>
     <li>
-        White and yellow colors filtering
-
-        <img src="results/01_white_and_yello_color_filter_output.png" width="500" alt="Color filter result" />
+        <div>White and yellow colors filtering</div>
+        <div><img src="results/01_white_and_yello_color_filter_output.png" width="500" alt="Color filter result" /></div>
     </li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
 </ul>
 
 As the next improvement I would extract configuration parametes into separate entity. And would use same instance of it for on-flight configuration/adjustment. It can become an interface for another system :)
